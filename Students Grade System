@@ -1,0 +1,314 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Student
+{
+private:
+    int id;
+    string name;
+    double math;
+    double english;
+    double science;
+
+public:
+
+    // Constructor
+    Student()
+    {
+        id = 0;
+        name = "";
+        math = 0;
+        english = 0;
+        science = 0;
+    }
+
+    // Set student data
+    void setData(int i, string n, double m, double e, double s)
+    {
+        id = i;
+        name = n;
+        math = m;
+        english = e;
+        science = s;
+    }
+
+    // Get ID
+    int getID()
+    {
+        return id;
+    }
+
+    // Get Name
+    string getName()
+    {
+        return name;
+    }
+
+    // Calculate total
+    double getTotal()
+    {
+        return math + english + science;
+    }
+
+    // Calculate average
+    double getAverage()
+    {
+        return getTotal() / 3;
+    }
+
+    // Calculate grade
+    char getGrade()
+    {
+        double average = getAverage();
+
+        if (average >= 90)
+            return 'A';
+        else if (average >= 80)
+            return 'B';
+        else if (average >= 70)
+            return 'C';
+        else if (average >= 60)
+            return 'D';
+        else
+            return 'F';
+    }
+
+    // Display student information
+    void display()
+    {
+        cout << "\n----------------------------" << endl;
+        cout << "ID: " << id << endl;
+        cout << "Name: " << name << endl;
+        cout << "Math: " << math << endl;
+        cout << "English: " << english << endl;
+        cout << "Science: " << science << endl;
+        cout << "Total: " << getTotal() << endl;
+        cout << "Average: " << getAverage() << endl;
+        cout << "Grade: " << getGrade() << endl;
+
+        if (getAverage() >= 60)
+            cout << "Status: Passed" << endl;
+        else
+            cout << "Status: Failed" << endl;
+
+        cout << "----------------------------" << endl;
+    }
+};
+
+
+// Add Student
+void addStudent(Student students[], int &count)
+{
+    if (count >= 100)
+    {
+        cout << "\nStudent list is full!" << endl;
+        return;
+    }
+
+    int id;
+    string name;
+    double math, english, science;
+
+    cout << "\nEnter Student ID: ";
+    cin >> id;
+
+    cout << "Enter Student Name: ";
+    cin >> name;
+
+    cout << "Enter Math Grade: ";
+    cin >> math;
+
+    cout << "Enter English Grade: ";
+    cin >> english;
+
+    cout << "Enter Science Grade: ";
+    cin >> science;
+
+    students[count].setData(id, name, math, english, science);
+
+    count++;
+
+    cout << "\nStudent added successfully!" << endl;
+}
+
+
+// Display All Students
+void displayStudents(Student students[], int count)
+{
+    if (count == 0)
+    {
+        cout << "\nNo students found!" << endl;
+        return;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        students[i].display();
+    }
+}
+
+
+// Search Student - Linear Search
+void searchStudent(Student students[], int count)
+{
+    int id;
+    bool found = false;
+
+    cout << "\nEnter Student ID to search: ";
+    cin >> id;
+
+    for (int i = 0; i < count; i++)
+    {
+        if (students[i].getID() == id)
+        {
+            cout << "\nStudent Found!" << endl;
+            students[i].display();
+
+            found = true;
+            break;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "\nStudent not found!" << endl;
+    }
+}
+
+
+// Find Highest Grade
+void findHighest(Student students[], int count)
+{
+    if (count == 0)
+    {
+        cout << "\nNo students found!" << endl;
+        return;
+    }
+
+    int highest = 0;
+
+    for (int i = 1; i < count; i++)
+    {
+        if (students[i].getAverage() > students[highest].getAverage())
+        {
+            highest = i;
+        }
+    }
+
+    cout << "\n===== Highest Grade =====" << endl;
+    students[highest].display();
+}
+
+
+// Find Lowest Grade
+void findLowest(Student students[], int count)
+{
+    if (count == 0)
+    {
+        cout << "\nNo students found!" << endl;
+        return;
+    }
+
+    int lowest = 0;
+
+    for (int i = 1; i < count; i++)
+    {
+        if (students[i].getAverage() < students[lowest].getAverage())
+        {
+            lowest = i;
+        }
+    }
+
+    cout << "\n===== Lowest Grade =====" << endl;
+    students[lowest].display();
+}
+
+
+// Bubble Sort - Sort by Average
+void sortStudents(Student students[], int count)
+{
+    if (count == 0)
+    {
+        cout << "\nNo students found!" << endl;
+        return;
+    }
+
+    for (int i = 0; i < count - 1; i++)
+    {
+        for (int j = 0; j < count - i - 1; j++)
+        {
+            if (students[j].getAverage() < students[j + 1].getAverage())
+            {
+                Student temp = students[j];
+                students[j] = students[j + 1];
+                students[j + 1] = temp;
+            }
+        }
+    }
+
+    cout << "\nStudents sorted successfully!" << endl;
+}
+
+
+// Main
+int main()
+{
+    Student students[100];
+
+    int count = 0;
+    int choice;
+
+    do
+    {
+        cout << "\n\n===== STUDENT GRADE SYSTEM =====" << endl;
+
+        cout << "1. Add Student" << endl;
+        cout << "2. Display All Students" << endl;
+        cout << "3. Search Student" << endl;
+        cout << "4. Find Highest Grade" << endl;
+        cout << "5. Find Lowest Grade" << endl;
+        cout << "6. Sort Students by Average" << endl;
+        cout << "7. Exit" << endl;
+
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+            case 1:
+                addStudent(students, count);
+                break;
+
+            case 2:
+                displayStudents(students, count);
+                break;
+
+            case 3:
+                searchStudent(students, count);
+                break;
+
+            case 4:
+                findHighest(students, count);
+                break;
+
+            case 5:
+                findLowest(students, count);
+                break;
+
+            case 6:
+                sortStudents(students, count);
+                break;
+
+            case 7:
+                cout << "\nThank you for using Student Grade System!" << endl;
+                break;
+
+            default:
+                cout << "\nInvalid choice!" << endl;
+        }
+
+    } while (choice != 7);
+
+    return 0;
+}
